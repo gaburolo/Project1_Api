@@ -1,13 +1,19 @@
-const mongoose = require('mongoose');
+const mysql = require('mysql');
+const conecction =mysql.createConnection({
+   host: '127.0.0.1',
+   user: 'root',
+   password: 'mysql22x',
+   port: '3306',
+   database: 'astraoke_db',
+   //socketPath: '/var/run/mysqld/mysqld.sock'
 
-const URI='mongodb+srv://gaburolo:dbuser22@cluster0.uptei.mongodb.net/proyectoPrueba?retryWrites=true&w=majority';
+});
+conecction.connect((err)=>{
+   if(err){
+      console.log('ERROR ERROR:' +err);
+   }else{
+      console.log('Conectado pá')
+   }
 
-
-const connectDB = async()=>{
-   await mongoose.connect(URI,{
-    useUnifiedTopology: true,
-    useNewUrlParser:true
-    });
-   console.log('db connected..!');
-};
-module.exports = connectDB;
+});
+module.exports = conecction;
