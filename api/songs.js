@@ -8,6 +8,80 @@ router.get('/',function(req,res){
 
 });
 
+///USERS
+//get users
+router.get('/users',(req,res)=>{
+    let sql='SELECT * FROM users';
+    conecction.query(sql,(err,rows,fields)=>{
+        if(err) throw err;
+        else{
+            res.json(rows);
+        };
+    });
+
+});
+
+//get user
+router.get('/users/:id',(req,res)=>{
+    const {id} = req.params;
+    let sql='SELECT * FROM users WHERE id_user = ?';
+    conecction.query(sql,[id],(err,rows,fields)=>{
+        if(err) throw err;
+        else{
+            res.json(rows);
+        };
+    });
+
+});
+
+//add user
+router.post('/users',(req,res)=>{
+    const{username, pass, premium} = req.body;
+    let sql=`INSERT INTO users(username, pass, premium) VALUES('${username}','${pass}','${premium}');`;
+    conecction.query(sql,(err,rows,fields)=>{
+        if(err) throw err;
+        else{
+            res.json({status:'User added'});
+        };
+    });
+
+});
+
+//delete user
+router.delete('/users/:id',(req,res)=>{
+    const {id} = req.params;
+    let sql=`DELETE FROM users WHERE id_user = ${id}`;
+    conecction.query(sql,(err,rows,fields)=>{
+        if(err) throw err;
+        else{
+            res.json({status:'User delete'});
+        };
+    });
+
+});
+
+//modify user
+router.put('/users/:id',(req,res)=>{
+    const {id} = req.params;
+    const{username, pass, premium} = req.body;
+    let sql = `UPDATE users set 
+            username ='${username}',
+            pass='${pass}',
+            premium='${premium}'
+            WHERE id_user='${id}'`;
+    conecction.query(sql,(err,rows,fields)=>{
+        if(err) throw err;
+        else{
+            res.json({status:'User modifed'});
+        };
+    });
+
+});
+
+
+
+
+/// SONGS
 //get songs
 router.get('/songs',(req,res)=>{
     let sql='SELECT * FROM songs';
@@ -60,7 +134,7 @@ router.delete('/songs/:id',(req,res)=>{
     });
 
 });
-
+//modify song
 router.put('/songs/:id',(req,res)=>{
     const {id} = req.params;
     const{name_song, artist, album, imglogo, url, lyric} = req.body;
